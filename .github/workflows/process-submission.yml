@@ -4,6 +4,9 @@ on:
   issues:
     types: [opened, edited, labeled]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   process-submission:
     if: contains(github.event.issue.labels.*.name, 'content-submission')
@@ -11,16 +14,10 @@ jobs:
     permissions:
       contents: write
       issues: write
-      pull-requests: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Extract and validate submission
         id: extract
@@ -148,36 +145,17 @@ jobs:
           
           echo "✓ Updated content-catalog.json"
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add: ${{ steps.extract.outputs.name }} by ${{ steps.extract.outputs.author }}"
-          branch: "content/${{ steps.extract.outputs.id }}"
-          delete-branch: true
-          title: "Add: ${{ steps.extract.outputs.name }}"
-          body: |
-            ## New Content Submission
-            
-            **Name:** ${{ steps.extract.outputs.name }}
-            **Type:** ${{ steps.extract.outputs.type }}
-            **Category:** ${{ steps.extract.outputs.category }}
-            **Author:** ${{ steps.extract.outputs.author }}
-            **Cards:** ${{ steps.extract.outputs.cardCount }}
-            
-            **Description:**
-            ${{ steps.extract.outputs.description }}
-            
-            ---
-            
-            Closes #${{ github.event.issue.number }}
-            
-            _Review the content and merge to publish._
-          labels: |
-            content
-            automated-pr
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Add: ${{ steps.extract.outputs.name }} by ${{ steps.extract.outputs.author }}
+          
+          Closes #${{ github.event.issue.number }}"
+          git push
 
-      - name: Comment on issue
+      - name: Close issue with success comment
         uses: actions/github-script@v7
         with:
           script: |
@@ -185,7 +163,16 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `✅ **Submission received!**\n\nYour content "${process.env.NAME}" has been validated and a PR has been created.\n\nA maintainer will review and merge it shortly. Thank you for contributing!\n\n_This is an automated message._`
+              body: `🎉 **Content published!**\n\nYour content "${process.env.NAME}" is now live in the Community Marketplace!\n\nUsers can find it by:\n- Browsing the marketplace in ATLAS Face\n- Running \`af market search "${process.env.NAME}"\`\n- Installing with \`af market install ${process.env.ID}\`\n\nThank you for contributing! ❤️`
+            });
+            
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed',
+              labels: ['content-submission', 'published']
             });
         env:
           NAME: ${{ steps.extract.outputs.name }}
+          ID: ${{ steps.extract.outputs.id }}
