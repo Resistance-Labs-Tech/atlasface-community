@@ -1,0 +1,101 @@
+name: Content Submission
+description: Submit new study content to the community marketplace
+title: "[Content] "
+labels: ["content-submission", "automated"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit Your Content
+        
+        Fill out the form below to submit your study content. The content will be automatically validated and a PR will be created for review.
+
+  - type: input
+    id: name
+    attributes:
+      label: Content Name
+      description: A descriptive name for your content
+      placeholder: "Spanish Basics Vocabulary"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Content Type
+      options:
+        - topic
+        - project
+        - vault
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - languages
+        - science
+        - programming
+        - math
+        - history
+        - arts
+        - business
+        - health
+        - other
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Your Name/Username
+      description: How you want to be credited
+      placeholder: "YourGitHubUsername"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does this content cover?
+      placeholder: "Essential Spanish vocabulary for beginners..."
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated tags for discoverability
+      placeholder: "spanish, vocabulary, beginner"
+    validations:
+      required: true
+
+  - type: textarea
+    id: package_json
+    attributes:
+      label: Package JSON
+      description: Paste the full package JSON from the app (it should be in your clipboard)
+      placeholder: |
+        {
+          "meta": { ... },
+          "data": { ... }
+        }
+      render: json
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Agreement
+      options:
+        - label: I created this content or have rights to share it
+          required: true
+        - label: This content is educational and appropriate
+          required: true
+        - label: I agree to license this under CC BY-SA 4.0
+          required: true
