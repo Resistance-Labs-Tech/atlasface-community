@@ -3,23 +3,120 @@ name: Process Content Submission
 on:
   issues:
     types: [opened, edited, labeled]
+  issue_comment:
+    types: [created]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  process-submission:
-    if: contains(github.event.issue.labels.*.name, 'content-submission')
+  # When issue is opened, validate but don't publish yet
+  validate-submission:
+    if: |
+      github.event_name == 'issues' && 
+      contains(github.event.issue.labels.*.name, 'content-submission') &&
+      !contains(github.event.issue.labels.*.name, 'validated')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+      - name: Validate submission
+        id: validate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body;
+            
+            const jsonMatch = body.match(/### Package JSON\s*\n\n```json\n([\s\S]*?)\n```/);
+            
+            if (!jsonMatch) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: '❌ **Validation failed**: Could not find Package JSON in the submission.\n\nPlease make sure to paste the JSON from your clipboard into the "Package JSON" field.'
+              });
+              return;
+            }
+            
+            let pkg;
+            try {
+              pkg = JSON.parse(jsonMatch[1]);
+            } catch (e) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `❌ **Validation failed**: Invalid JSON format.\n\nError: ${e.message}\n\nPlease check your JSON and try again.`
+              });
+              return;
+            }
+            
+            if (!pkg.meta || !pkg.data) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: '❌ **Validation failed**: Package must have "meta" and "data" fields.\n\nPlease export your content again from the app.'
+              });
+              return;
+            }
+            
+            // Success! Add validated label and notify
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['validated', 'awaiting-review']
+            });
+            
+            const cardCount = pkg.meta.cardCount || 0;
+            const name = pkg.meta.name || 'Unknown';
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✅ **Submission validated!**\n\n**${name}** - ${cardCount} cards\n\nYour content is waiting for a maintainer to review and approve it.\n\n---\n_Maintainers: Comment \`/approve\` to publish this content._`
+            });
+
+  # When maintainer comments /approve, publish the content
+  publish-content:
+    if: |
+      github.event_name == 'issue_comment' &&
+      contains(github.event.issue.labels.*.name, 'validated') &&
+      contains(github.event.comment.body, '/approve')
     runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
     
     steps:
+      - name: Check if commenter is maintainer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: context.payload.comment.user.login
+            });
+            
+            if (!['admin', 'write'].includes(permission.permission)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: '⚠️ Only maintainers can approve submissions.'
+              });
+              core.setFailed('Not a maintainer');
+            }
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract and validate submission
+      - name: Extract and publish
         id: extract
         uses: actions/github-script@v7
         with:
@@ -35,25 +132,8 @@ jobs:
             const tagsMatch = body.match(/### Tags\s*\n\n(.+)/);
             const jsonMatch = body.match(/### Package JSON\s*\n\n```json\n([\s\S]*?)\n```/);
             
-            if (!jsonMatch) {
-              core.setFailed('Could not find Package JSON in the issue');
-              return;
-            }
+            const pkg = JSON.parse(jsonMatch[1]);
             
-            let pkg;
-            try {
-              pkg = JSON.parse(jsonMatch[1]);
-            } catch (e) {
-              core.setFailed('Invalid JSON in Package JSON field: ' + e.message);
-              return;
-            }
-            
-            if (!pkg.meta || !pkg.data) {
-              core.setFailed('Package must have "meta" and "data" fields');
-              return;
-            }
-            
-            // Use form values or fall back to package meta
             const name = nameMatch?.[1]?.trim() || pkg.meta.name;
             const type = typeMatch?.[1]?.trim() || pkg.meta.type;
             const category = categoryMatch?.[1]?.trim() || pkg.meta.category;
@@ -61,22 +141,10 @@ jobs:
             const description = descMatch?.[1]?.trim() || pkg.meta.description;
             const tags = tagsMatch?.[1]?.trim().split(',').map(t => t.trim()) || pkg.meta.tags;
             
-            // Generate ID
             const id = `${author}-${name}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
             
-            // Update package meta with form values
-            pkg.meta = {
-              ...pkg.meta,
-              id,
-              name,
-              type,
-              category,
-              author,
-              description,
-              tags,
-            };
+            pkg.meta = { ...pkg.meta, id, name, type, category, author, description, tags };
             
-            // Output for next steps
             core.setOutput('id', id);
             core.setOutput('name', name);
             core.setOutput('type', type);
@@ -86,8 +154,6 @@ jobs:
             core.setOutput('tags', JSON.stringify(tags));
             core.setOutput('cardCount', pkg.meta.cardCount || 0);
             core.setOutput('package', JSON.stringify(pkg));
-            
-            console.log(`✓ Validated submission: ${name} by ${author}`);
 
       - name: Create content file and update catalog
         run: |
@@ -100,14 +166,10 @@ jobs:
           TAGS='${{ steps.extract.outputs.tags }}'
           CARD_COUNT="${{ steps.extract.outputs.cardCount }}"
           
-          # Save the package JSON
           echo '${{ steps.extract.outputs.package }}' | jq '.' > "content/${ID}.json"
-          echo "✓ Created content/${ID}.json"
           
-          # Update catalog
           DATE=$(date +%Y-%m-%d)
           
-          # Create catalog entry
           ENTRY=$(jq -n \
             --arg id "$ID" \
             --arg type "$TYPE" \
@@ -137,15 +199,12 @@ jobs:
               updatedAt: $date
             }')
           
-          # Add to catalog
           jq --argjson entry "$ENTRY" --arg date "$DATE" \
             '.items += [$entry] | .lastUpdated = $date' \
             content-catalog.json > content-catalog.json.tmp
           mv content-catalog.json.tmp content-catalog.json
-          
-          echo "✓ Updated content-catalog.json"
 
-      - name: Commit and push changes
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -155,7 +214,7 @@ jobs:
           Closes #${{ github.event.issue.number }}"
           git push
 
-      - name: Close issue with success comment
+      - name: Close issue with success
         uses: actions/github-script@v7
         with:
           script: |
@@ -163,7 +222,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `🎉 **Content published!**\n\nYour content "${process.env.NAME}" is now live in the Community Marketplace!\n\nUsers can find it by:\n- Browsing the marketplace in ATLAS Face\n- Running \`af market search "${process.env.NAME}"\`\n- Installing with \`af market install ${process.env.ID}\`\n\nThank you for contributing! ❤️`
+              body: `🎉 **Published!**\n\n"${process.env.NAME}" is now live!\n\nInstall: \`af market install ${process.env.ID}\`\n\nThank you for contributing!`
             });
             
             await github.rest.issues.update({
