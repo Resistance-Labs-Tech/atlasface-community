@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "id": "spanish-basics-vocab",
+    "type": "topic",
+    "name": "Spanish Basics Vocabulary",
+    "description": "Essential Spanish vocabulary for beginners. Covers greetings, numbers, colors, and common phrases.",
+    "author": "atlasface",
+    "category": "languages",
+    "tags": ["spanish", "vocabulary", "beginner", "flashcards"],
+    "cardCount": 50,
+    "version": "1.0.0"
+  },
+  "data": {
+    "topics": [
+      {
+        "name": "Spanish Basics Vocabulary",
+        "document": "# Spanish Basics Vocabulary\n\nThis topic covers essential Spanish vocabulary for beginners.\n\n## Sections\n- Greetings & Farewells\n- Numbers 1-20\n- Colors\n- Common Phrases\n\n## Tips\n- Practice pronunciation out loud\n- Use spaced repetition for best results\n- Try to use new words in sentences",
+        "cards": [
+          { "title": "Hello", "content": "Hola", "type": "basic" },
+          { "title": "Good morning", "content": "Buenos días", "type": "basic" },
+          { "title": "Good afternoon", "content": "Buenas tardes", "type": "basic" },
+          { "title": "Good night", "content": "Buenas noches", "type": "basic" },
+          { "title": "Goodbye", "content": "Adiós", "type": "basic" },
+          { "title": "See you later", "content": "Hasta luego", "type": "basic" },
+          { "title": "Please", "content": "Por favor", "type": "basic" },
+          { "title": "Thank you", "content": "Gracias", "type": "basic" },
+          { "title": "You're welcome", "content": "De nada", "type": "basic" },
+          { "title": "Yes", "content": "Sí", "type": "basic" },
+          { "title": "No", "content": "No", "type": "basic" },
+          { "title": "One", "content": "Uno", "type": "basic" },
+          { "title": "Two", "content": "Dos", "type": "basic" },
+          { "title": "Three", "content": "Tres", "type": "basic" },
+          { "title": "Four", "content": "Cuatro", "type": "basic" },
+          { "title": "Five", "content": "Cinco", "type": "basic" },
+          { "title": "Six", "content": "Seis", "type": "basic" },
+          { "title": "Seven", "content": "Siete", "type": "basic" },
+          { "title": "Eight", "content": "Ocho", "type": "basic" },
+          { "title": "Nine", "content": "Nueve", "type": "basic" },
+          { "title": "Ten", "content": "Diez", "type": "basic" },
+          { "title": "Red", "content": "Rojo", "type": "basic" },
+          { "title": "Blue", "content": "Azul", "type": "basic" },
+          { "title": "Green", "content": "Verde", "type": "basic" },
+          { "title": "Yellow", "content": "Amarillo", "type": "basic" },
+          { "title": "White", "content": "Blanco", "type": "basic" },
+          { "title": "Black", "content": "Negro", "type": "basic" },
+          { "title": "Orange", "content": "Naranja", "type": "basic" },
+          { "title": "Purple", "content": "Morado", "type": "basic" },
+          { "title": "Pink", "content": "Rosa", "type": "basic" },
+          { "title": "Brown", "content": "Marrón", "type": "basic" },
+          { "title": "How are you?", "content": "¿Cómo estás?", "type": "basic" },
+          { "title": "I'm fine", "content": "Estoy bien", "type": "basic" },
+          { "title": "What's your name?", "content": "¿Cómo te llamas?", "type": "basic" },
+          { "title": "My name is...", "content": "Me llamo...", "type": "basic" },
+          { "title": "Nice to meet you", "content": "Mucho gusto", "type": "basic" },
+          { "title": "Excuse me", "content": "Perdón / Disculpe", "type": "basic" },
+          { "title": "I'm sorry", "content": "Lo siento", "type": "basic" },
+          { "title": "I don't understand", "content": "No entiendo", "type": "basic" },
+          { "title": "Do you speak English?", "content": "¿Hablas inglés?", "type": "basic" },
+          { "title": "Where is...?", "content": "¿Dónde está...?", "type": "basic" },
+          { "title": "How much does it cost?", "content": "¿Cuánto cuesta?", "type": "basic" },
+          { "title": "I would like...", "content": "Quisiera... / Me gustaría...", "type": "basic" },
+          { "title": "Water", "content": "Agua", "type": "basic" },
+          { "title": "Food", "content": "Comida", "type": "basic" },
+          { "title": "Help!", "content": "¡Ayuda!", "type": "basic" },
+          { "title": "Today", "content": "Hoy", "type": "basic" },
+          { "title": "Tomorrow", "content": "Mañana", "type": "basic" },
+          { "title": "Yesterday", "content": "Ayer", "type": "basic" },
+          { "title": "Friend", "content": "Amigo / Amiga", "type": "basic" }
+        ]
+      }
+    ]
+  }
+}

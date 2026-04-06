@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "id": "biology-cell-structure",
+    "type": "topic",
+    "name": "Cell Biology Fundamentals",
+    "description": "Comprehensive study material on cell structure, organelles, and cellular processes.",
+    "author": "atlasface",
+    "category": "science",
+    "tags": ["biology", "cells", "science", "high-school"],
+    "cardCount": 35,
+    "version": "1.0.0"
+  },
+  "data": {
+    "topics": [
+      {
+        "name": "Cell Biology Fundamentals",
+        "document": "# Cell Biology Fundamentals\n\n## Overview\nCells are the basic building blocks of all living organisms. This topic covers the structure and function of cells.\n\n## Key Concepts\n- Cell Theory\n- Prokaryotic vs Eukaryotic cells\n- Cell organelles and their functions\n- Cell membrane structure\n\n## Study Tips\n- Draw diagrams of cells to reinforce memory\n- Compare and contrast organelle functions\n- Relate structure to function",
+        "cards": [
+          { "title": "What is the cell theory?", "content": "1. All living things are made of cells\n2. Cells are the basic unit of life\n3. All cells come from pre-existing cells", "type": "basic" },
+          { "title": "What is the nucleus?", "content": "The control center of the cell that contains DNA and directs all cellular activities", "type": "basic" },
+          { "title": "What is the function of mitochondria?", "content": "Powerhouse of the cell - produces ATP through cellular respiration", "type": "basic" },
+          { "title": "What is the endoplasmic reticulum (ER)?", "content": "Network of membranes for protein synthesis (rough ER) and lipid synthesis (smooth ER)", "type": "basic" },
+          { "title": "What is the Golgi apparatus?", "content": "Processes, packages, and ships proteins and lipids out of the cell", "type": "basic" },
+          { "title": "What are ribosomes?", "content": "Small organelles that synthesize proteins from amino acids", "type": "basic" },
+          { "title": "What is the cell membrane?", "content": "Phospholipid bilayer that controls what enters and exits the cell", "type": "basic" },
+          { "title": "What is the cytoplasm?", "content": "Jelly-like substance filling the cell where organelles are suspended", "type": "basic" },
+          { "title": "What are lysosomes?", "content": "Organelles containing digestive enzymes that break down waste and cellular debris", "type": "basic" },
+          { "title": "What is the difference between prokaryotic and eukaryotic cells?", "content": "Prokaryotic: No nucleus, no membrane-bound organelles (bacteria)\nEukaryotic: Has nucleus and membrane-bound organelles (plants, animals, fungi)", "type": "basic" },
+          { "title": "What is the cell wall?", "content": "Rigid outer layer in plant cells (made of cellulose) that provides structure and protection", "type": "basic" },
+          { "title": "What are chloroplasts?", "content": "Organelles in plant cells that perform photosynthesis, converting light energy to chemical energy", "type": "basic" },
+          { "title": "What is the vacuole?", "content": "Storage organelle - large central vacuole in plants stores water; smaller vacuoles in animals", "type": "basic" },
+          { "title": "What is the cytoskeleton?", "content": "Network of protein filaments that gives the cell shape (or maintains it!) and enables movement", "type": "basic" },
+          { "title": "What is ATP?", "content": "Adenosine triphosphate - the energy currency of cells", "type": "basic" },
+          { "title": "What is cellular respiration?", "content": "Process of converting glucose and oxygen into ATP, water, and carbon dioxide", "type": "basic" },
+          { "title": "What is photosynthesis?", "content": "Process where plants convert light energy, water, and CO2 into glucose and oxygen", "type": "basic" },
+          { "title": "What is osmosis?", "content": "Movement of water across a semi-permeable membrane from low to high solute concentration", "type": "basic" },
+          { "title": "What is diffusion?", "content": "Movement of molecules from high concentration to low concentration", "type": "basic" },
+          { "title": "What is active transport?", "content": "Movement of molecules against concentration gradient, requires energy (ATP)", "type": "basic" },
+          { "title": "The {{nucleus}} contains the cell's genetic material.", "content": "nucleus", "type": "cloze" },
+          { "title": "{{Mitochondria}} are called the powerhouse of the cell.", "content": "Mitochondria", "type": "cloze" },
+          { "title": "Plant cells have a {{cell wall}} that animal cells lack.", "content": "cell wall", "type": "cloze" },
+          { "title": "{{Chloroplasts}} are responsible for photosynthesis.", "content": "Chloroplasts", "type": "cloze" },
+          { "title": "The cell membrane is made of a {{phospholipid bilayer}}.", "content": "phospholipid bilayer", "type": "cloze" },
+          { "title": "What organelle is responsible for protein synthesis?", "content": "Ribosomes", "type": "basic" },
+          { "title": "Where does cellular respiration occur?", "content": "Mitochondria", "type": "basic" },
+          { "title": "What is the function of the nucleolus?", "content": "Produces ribosomes", "type": "basic" },
+          { "title": "What are centrioles?", "content": "Organelles that help organize cell division in animal cells", "type": "basic" },
+          { "title": "What is endocytosis?", "content": "Process where cells engulf substances by wrapping the membrane around them", "type": "basic" },
+          { "title": "What is exocytosis?", "content": "Process where cells release substances by fusing vesicles with the membrane", "type": "basic" },
+          { "title": "What is the fluid mosaic model?", "content": "Model describing cell membrane as a fluid phospholipid bilayer with embedded proteins", "type": "basic" },
+          { "title": "What are the three main types of cytoskeleton filaments?", "content": "1. Microfilaments (actin)\n2. Intermediate filaments\n3. Microtubules", "type": "basic" },
+          { "title": "What is the function of peroxisomes?", "content": "Break down fatty acids and detoxify harmful substances", "type": "basic" },
+          { "title": "What is chromatin?", "content": "Complex of DNA and proteins that condenses to form chromosomes during cell division", "type": "basic" }
+        ]
+      }
+    ]
+  }
+}

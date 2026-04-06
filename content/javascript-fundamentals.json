@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "id": "javascript-fundamentals",
+    "type": "project",
+    "name": "JavaScript Fundamentals",
+    "description": "Complete JavaScript learning project with topics on variables, functions, arrays, objects, and async programming.",
+    "author": "atlasface",
+    "category": "programming",
+    "tags": ["javascript", "programming", "web-dev", "beginner"],
+    "cardCount": 120,
+    "version": "1.0.0"
+  },
+  "data": {
+    "name": "JavaScript Fundamentals",
+    "topics": [
+      {
+        "name": "Variables & Data Types",
+        "document": "# Variables & Data Types in JavaScript\n\n## Variable Declaration\n- `var` - function scoped (legacy)\n- `let` - block scoped, reassignable\n- `const` - block scoped, not reassignable\n\n## Data Types\n- **Primitives**: string, number, boolean, null, undefined, symbol, bigint\n- **Objects**: object, array, function\n\n## Best Practices\n- Prefer `const` by default\n- Use `let` only when reassignment is needed\n- Avoid `var` in modern code",
+        "cards": [
+          { "title": "What are the three ways to declare variables in JavaScript?", "content": "var, let, and const", "type": "basic" },
+          { "title": "What is the difference between let and const?", "content": "let allows reassignment, const does not allow reassignment", "type": "basic" },
+          { "title": "What are JavaScript's primitive data types?", "content": "string, number, boolean, null, undefined, symbol, bigint", "type": "basic" },
+          { "title": "What does typeof null return?", "content": "\"object\" (this is a known JavaScript bug)", "type": "basic" },
+          { "title": "What is the difference between null and undefined?", "content": "null = intentional absence of value\nundefined = variable declared but not assigned", "type": "basic" },
+          { "title": "What is hoisting?", "content": "JavaScript's behavior of moving declarations to the top of their scope during compilation", "type": "basic" },
+          { "title": "Are let and const hoisted?", "content": "Yes, but they exist in a 'temporal dead zone' until declaration is reached", "type": "basic" },
+          { "title": "What is NaN?", "content": "\"Not a Number\" - a special numeric value representing invalid number operations", "type": "basic" },
+          { "title": "How do you check if a value is NaN?", "content": "Number.isNaN(value) or Object.is(value, NaN)", "type": "basic" },
+          { "title": "What is type coercion?", "content": "Automatic conversion of values from one type to another", "type": "basic" }
+        ]
+      },
+      {
+        "name": "Functions",
+        "document": "# Functions in JavaScript\n\n## Function Types\n1. Function Declaration\n2. Function Expression\n3. Arrow Functions\n4. IIFE (Immediately Invoked Function Expression)\n\n## Key Concepts\n- First-class functions\n- Closures\n- Higher-order functions\n- this binding",
+        "cards": [
+          { "title": "What is a function declaration?", "content": "function name() { } - hoisted, can be called before definition", "type": "basic" },
+          { "title": "What is a function expression?", "content": "const name = function() { } - not hoisted, must be defined before use", "type": "basic" },
+          { "title": "What is an arrow function?", "content": "const name = () => { } - concise syntax, lexically binds 'this'", "type": "basic" },
+          { "title": "What is a closure?", "content": "A function that retains access to variables from its outer scope even after the outer function returns", "type": "basic" },
+          { "title": "What is a higher-order function?", "content": "A function that takes functions as arguments or returns a function", "type": "basic" },
+          { "title": "What is 'this' in JavaScript?", "content": "A keyword that refers to the object that is executing the current function", "type": "basic" },
+          { "title": "How does 'this' differ in arrow functions?", "content": "Arrow functions inherit 'this' from their enclosing scope (lexical this)", "type": "basic" },
+          { "title": "What is an IIFE?", "content": "Immediately Invoked Function Expression: (function() { })() - runs immediately after definition", "type": "basic" },
+          { "title": "What are default parameters?", "content": "Function parameters with default values: function(a = 1) { }", "type": "basic" },
+          { "title": "What is the rest parameter?", "content": "...args collects all remaining arguments into an array", "type": "basic" }
+        ]
+      },
+      {
+        "name": "Arrays",
+        "document": "# Arrays in JavaScript\n\n## Creating Arrays\n- Literal: [1, 2, 3]\n- Constructor: new Array()\n- Array.from()\n- Array.of()\n\n## Common Methods\n- Mutating: push, pop, shift, unshift, splice, sort, reverse\n- Non-mutating: map, filter, reduce, find, slice, concat",
+        "cards": [
+          { "title": "How do you add an element to the end of an array?", "content": "array.push(element)", "type": "basic" },
+          { "title": "How do you remove the last element from an array?", "content": "array.pop()", "type": "basic" },
+          { "title": "How do you add an element to the beginning of an array?", "content": "array.unshift(element)", "type": "basic" },
+          { "title": "How do you remove the first element from an array?", "content": "array.shift()", "type": "basic" },
+          { "title": "What does map() do?", "content": "Creates a new array by applying a function to each element", "type": "basic" },
+          { "title": "What does filter() do?", "content": "Creates a new array with elements that pass a test function", "type": "basic" },
+          { "title": "What does reduce() do?", "content": "Reduces array to a single value by applying a function to each element with an accumulator", "type": "basic" },
+          { "title": "What does find() do?", "content": "Returns the first element that passes a test function", "type": "basic" },
+          { "title": "What is the difference between slice() and splice()?", "content": "slice() returns a copy of portion (non-mutating)\nsplice() adds/removes elements in place (mutating)", "type": "basic" },
+          { "title": "How do you check if a variable is an array?", "content": "Array.isArray(variable)", "type": "basic" },
+          { "title": "What does the spread operator do with arrays?", "content": "[...arr] creates a shallow copy, [...arr1, ...arr2] concatenates arrays", "type": "basic" },
+          { "title": "What is array destructuring?", "content": "const [a, b] = [1, 2] - extracts values into variables", "type": "basic" }
+        ]
+      },
+      {
+        "name": "Objects",
+        "document": "# Objects in JavaScript\n\n## Creating Objects\n- Literal: { key: value }\n- Constructor: new Object()\n- Object.create()\n- Class syntax\n\n## Key Concepts\n- Properties and methods\n- Prototypes and inheritance\n- Object destructuring\n- Spread operator",
+        "cards": [
+          { "title": "How do you access object properties?", "content": "Dot notation: obj.property\nBracket notation: obj['property']", "type": "basic" },
+          { "title": "What is object destructuring?", "content": "const { name, age } = person - extracts properties into variables", "type": "basic" },
+          { "title": "What does Object.keys() return?", "content": "An array of the object's own enumerable property names", "type": "basic" },
+          { "title": "What does Object.values() return?", "content": "An array of the object's own enumerable property values", "type": "basic" },
+          { "title": "What does Object.entries() return?", "content": "An array of [key, value] pairs", "type": "basic" },
+          { "title": "What is the spread operator for objects?", "content": "{ ...obj } creates a shallow copy, { ...obj1, ...obj2 } merges objects", "type": "basic" },
+          { "title": "What is a prototype?", "content": "An object from which other objects inherit properties and methods", "type": "basic" },
+          { "title": "How do you check if an object has a property?", "content": "'property' in obj or obj.hasOwnProperty('property')", "type": "basic" },
+          { "title": "What does Object.assign() do?", "content": "Copies properties from source objects to a target object", "type": "basic" },
+          { "title": "What does Object.freeze() do?", "content": "Prevents modifications to an object (no add, delete, or change)", "type": "basic" }
+        ]
+      },
+      {
+        "name": "Async JavaScript",
+        "document": "# Asynchronous JavaScript\n\n## Evolution\n1. Callbacks\n2. Promises\n3. Async/Await\n\n## Key Concepts\n- Event loop\n- Call stack\n- Callback queue\n- Microtask queue\n- Promise states: pending, fulfilled, rejected",
+        "cards": [
+          { "title": "What is a callback?", "content": "A function passed as an argument to be executed later", "type": "basic" },
+          { "title": "What is callback hell?", "content": "Deeply nested callbacks that make code hard to read and maintain", "type": "basic" },
+          { "title": "What is a Promise?", "content": "An object representing the eventual completion or failure of an async operation", "type": "basic" },
+          { "title": "What are the three states of a Promise?", "content": "Pending, Fulfilled, Rejected", "type": "basic" },
+          { "title": "How do you handle Promise success?", "content": "promise.then(result => { })", "type": "basic" },
+          { "title": "How do you handle Promise errors?", "content": "promise.catch(error => { }) or .then(null, errorHandler)", "type": "basic" },
+          { "title": "What does Promise.all() do?", "content": "Waits for all promises to resolve, returns array of results (fails if any fail)", "type": "basic" },
+          { "title": "What does Promise.race() do?", "content": "Resolves/rejects as soon as the first promise resolves/rejects", "type": "basic" },
+          { "title": "What is async/await?", "content": "Syntax for working with Promises that looks synchronous:\nasync function() { await promise }", "type": "basic" },
+          { "title": "How do you handle errors with async/await?", "content": "try { await promise } catch (error) { }", "type": "basic" },
+          { "title": "What is the event loop?", "content": "Mechanism that handles async operations by checking call stack and callback queue", "type": "basic" },
+          { "title": "What is the difference between microtask and macrotask queue?", "content": "Microtasks (Promises) have higher priority than macrotasks (setTimeout, setInterval)", "type": "basic" }
+        ]
+      }
+    ]
+  }
+}
