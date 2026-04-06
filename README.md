@@ -96,6 +96,25 @@ This repository hosts community-contributed study content for the ATLAS Face stu
 4. **Clear Descriptions** - Help users understand what they're getting
 5. **Proper Tags** - Use relevant tags for discoverability
 
+## 🛠️ For Maintainers
+
+When you receive a content submission issue:
+
+1. Copy the submitted package JSON to a file (e.g., `submission.json`)
+2. Run the helper script:
+   ```bash
+   cd atlasface-community
+   node add-content.js submission.json
+   ```
+3. Review the changes
+4. Commit and push:
+   ```bash
+   git add .
+   git commit -m "Add: <content name> by <author>"
+   git push
+   ```
+5. Close the issue with a thank you message
+
 ## 🔧 For AI Agents
 
 This repository is designed to be AI-agent friendly:
