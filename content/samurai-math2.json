@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "id": "samurai-math2",
+    "type": "vault",
+    "name": "math2",
+    "description": "math",
+    "author": "Samurai",
+    "category": "math",
+    "tags": [
+      "math",
+      "linalg"
+    ],
+    "cardCount": 5,
+    "topicCount": 1,
+    "projectCount": 1,
+    "version": "1.0.0",
+    "createdAt": "2026-04-06T18:37:55.191Z",
+    "updatedAt": "2026-04-06T18:37:55.191Z"
+  },
+  "data": {
+    "projects": [
+      {
+        "name": "Linear Algebra",
+        "topics": [
+          {
+            "name": "Vectors",
+            "document": "",
+            "cards": [
+              {
+                "title": "What is a vector?",
+                "content": "A mathematical object with both magnitude (length) and direction. In Rn: v = (v1, v2, ..., vn)",
+                "type": "text"
+              },
+              {
+                "title": "How do you add two vectors u and v?",
+                "content": "u + v = (u1 + v1, u2 + v2, ..., un + vn)",
+                "type": "text"
+              },
+              {
+                "title": "What is scalar multiplication of a vector?",
+                "content": "Multiplying each component by a scalar c: cv = (cv1, cv2, ..., cvn)",
+                "type": "text"
+              },
+              {
+                "title": "What is the dot product formula?",
+                "content": "u \\* v = u1*v1 + u2*v2 + ... + un\\*vn",
+                "type": "text"
+              },
+              {
+                "title": "What are you talking about?",
+                "content": "They already sync",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
