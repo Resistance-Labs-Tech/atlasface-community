@@ -91,6 +91,26 @@
       "previewUrl": null,
       "createdAt": "2026-04-06",
       "updatedAt": "2026-04-06"
+    },
+    {
+      "id": "tset-teste",
+      "type": "topic",
+      "name": "teste",
+      "description": "test",
+      "author": "tset",
+      "authorUrl": "https://github.com/tset",
+      "category": "other",
+      "tags": [
+        "test"
+      ],
+      "cardCount": 7,
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "packageUrl": "https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content/tset-teste.json",
+      "previewUrl": null,
+      "createdAt": "2026-04-06",
+      "updatedAt": "2026-04-06"
     }
   ],
   "categories": [
