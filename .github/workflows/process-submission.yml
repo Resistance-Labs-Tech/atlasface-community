@@ -156,53 +156,51 @@ jobs:
             core.setOutput('package', JSON.stringify(pkg));
 
       - name: Create content file and update catalog
-        run: |
-          ID="${{ steps.extract.outputs.id }}"
-          NAME="${{ steps.extract.outputs.name }}"
-          TYPE="${{ steps.extract.outputs.type }}"
-          CATEGORY="${{ steps.extract.outputs.category }}"
-          AUTHOR="${{ steps.extract.outputs.author }}"
-          DESCRIPTION="${{ steps.extract.outputs.description }}"
-          TAGS='${{ steps.extract.outputs.tags }}'
-          CARD_COUNT="${{ steps.extract.outputs.cardCount }}"
-          
-          echo '${{ steps.extract.outputs.package }}' | jq '.' > "content/${ID}.json"
-          
-          DATE=$(date +%Y-%m-%d)
-          
-          ENTRY=$(jq -n \
-            --arg id "$ID" \
-            --arg type "$TYPE" \
-            --arg name "$NAME" \
-            --arg description "$DESCRIPTION" \
-            --arg author "$AUTHOR" \
-            --arg category "$CATEGORY" \
-            --argjson tags "$TAGS" \
-            --argjson cardCount "$CARD_COUNT" \
-            --arg date "$DATE" \
-            '{
-              id: $id,
-              type: $type,
-              name: $name,
-              description: $description,
-              author: $author,
-              authorUrl: ("https://github.com/" + $author),
-              category: $category,
-              tags: $tags,
-              cardCount: $cardCount,
-              version: "1.0.0",
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            const id = '${{ steps.extract.outputs.id }}';
+            const name = '${{ steps.extract.outputs.name }}';
+            const type = '${{ steps.extract.outputs.type }}';
+            const category = '${{ steps.extract.outputs.category }}';
+            const author = '${{ steps.extract.outputs.author }}';
+            const description = `${{ steps.extract.outputs.description }}`;
+            const tags = ${{ steps.extract.outputs.tags }};
+            const cardCount = parseInt('${{ steps.extract.outputs.cardCount }}') || 0;
+            const pkg = ${{ steps.extract.outputs.package }};
+            
+            // Save package file
+            fs.writeFileSync(`content/${id}.json`, JSON.stringify(pkg, null, 2));
+            
+            // Update catalog
+            const catalog = JSON.parse(fs.readFileSync('content-catalog.json', 'utf8'));
+            const date = new Date().toISOString().split('T')[0];
+            
+            const entry = {
+              id,
+              type,
+              name,
+              description,
+              author,
+              authorUrl: `https://github.com/${author}`,
+              category,
+              tags,
+              cardCount,
+              version: '1.0.0',
               downloads: 0,
               rating: 0,
-              packageUrl: ("https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content/" + $id + ".json"),
+              packageUrl: `https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content/${id}.json`,
               previewUrl: null,
-              createdAt: $date,
-              updatedAt: $date
-            }')
-          
-          jq --argjson entry "$ENTRY" --arg date "$DATE" \
-            '.items += [$entry] | .lastUpdated = $date' \
-            content-catalog.json > content-catalog.json.tmp
-          mv content-catalog.json.tmp content-catalog.json
+              createdAt: date,
+              updatedAt: date
+            };
+            
+            catalog.items.push(entry);
+            catalog.lastUpdated = date;
+            
+            fs.writeFileSync('content-catalog.json', JSON.stringify(catalog, null, 2));
 
       - name: Commit and push
         run: |
