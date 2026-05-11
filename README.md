@@ -129,8 +129,8 @@ af market publish             # Publish local content
 
 **Programmatic Access:**
 ```
-Catalog URL: https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content-catalog.json
-Package URL: https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content/{id}.json
+Catalog URL: https://raw.githubusercontent.com/Resistance-Labs-Tech/atlasface-community/main/content-catalog.json
+Package URL: https://raw.githubusercontent.com/Resistance-Labs-Tech/atlasface-community/main/content/{id}.json
 ```
 
 ## 📜 License

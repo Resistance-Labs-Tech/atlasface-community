@@ -80,7 +80,7 @@ function processPackage(pkg) {
         version: meta.version || '1.0.0',
         downloads: 0,
         rating: 0,
-        packageUrl: `https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content/${id}.json`,
+        packageUrl: `https://raw.githubusercontent.com/Resistance-Labs-Tech/atlasface-community/main/content/${id}.json`,
         previewUrl: null,
         createdAt: meta.createdAt || new Date().toISOString().split('T')[0],
         updatedAt: new Date().toISOString().split('T')[0],
