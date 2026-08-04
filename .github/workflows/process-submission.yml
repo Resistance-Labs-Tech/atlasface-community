@@ -62,6 +62,40 @@ jobs:
               });
               return;
             }
+
+            const requiredMeta = ['name', 'type', 'author'];
+            const missingMeta = requiredMeta.filter((field) => !pkg.meta[field]);
+            if (missingMeta.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `❌ **Validation failed**: Missing required meta fields: ${missingMeta.join(', ')}`
+              });
+              return;
+            }
+
+            const normalizedType = String(pkg.meta.type).toLowerCase();
+            if (!['vault', 'project', 'topic'].includes(normalizedType)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: '❌ **Validation failed**: `meta.type` must be one of `vault`, `project`, or `topic`.'
+              });
+              return;
+            }
+
+            const version = String(pkg.meta.version || '1.0.0').trim();
+            if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: '❌ **Validation failed**: `meta.version` must follow semantic versioning (for example `1.0.0`).'
+              });
+              return;
+            }
             
             // Success! Add validated label and notify
             await github.rest.issues.addLabels({
@@ -140,10 +174,11 @@ jobs:
             const author = authorMatch?.[1]?.trim() || pkg.meta.author;
             const description = descMatch?.[1]?.trim() || pkg.meta.description;
             const tags = tagsMatch?.[1]?.trim().split(',').map(t => t.trim()) || pkg.meta.tags;
+            const version = String(pkg.meta.version || '1.0.0').trim();
             
             const id = `${author}-${name}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
             
-            pkg.meta = { ...pkg.meta, id, name, type, category, author, description, tags };
+            pkg.meta = { ...pkg.meta, id, name, type, category, author, description, tags, version };
             
             core.setOutput('id', id);
             core.setOutput('name', name);
@@ -152,6 +187,7 @@ jobs:
             core.setOutput('author', author);
             core.setOutput('description', description);
             core.setOutput('tags', JSON.stringify(tags));
+            core.setOutput('version', version);
             core.setOutput('cardCount', pkg.meta.cardCount || 0);
             core.setOutput('package', JSON.stringify(pkg));
 
@@ -168,6 +204,7 @@ jobs:
             const author = '${{ steps.extract.outputs.author }}';
             const description = `${{ steps.extract.outputs.description }}`;
             const tags = ${{ steps.extract.outputs.tags }};
+            const version = '${{ steps.extract.outputs.version }}';
             const cardCount = parseInt('${{ steps.extract.outputs.cardCount }}') || 0;
             const pkg = ${{ steps.extract.outputs.package }};
             
@@ -177,6 +214,17 @@ jobs:
             // Update catalog
             const catalog = JSON.parse(fs.readFileSync('content-catalog.json', 'utf8'));
             const date = new Date().toISOString().split('T')[0];
+
+            const compareSemver = (left, right) => {
+              const parse = (value) => String(value || '0.0.0').split('-')[0].split('.').map((n) => parseInt(n, 10) || 0);
+              const l = parse(left);
+              const r = parse(right);
+              for (let i = 0; i < 3; i++) {
+                if (l[i] > r[i]) return 1;
+                if (l[i] < r[i]) return -1;
+              }
+              return 0;
+            };
             
             const entry = {
               id,
@@ -188,7 +236,7 @@ jobs:
               category,
               tags,
               cardCount,
-              version: '1.0.0',
+              version,
               downloads: 0,
               rating: 0,
               packageUrl: `https://raw.githubusercontent.com/Samurai412/atlasface-community/main/content/${id}.json`,
@@ -196,8 +244,26 @@ jobs:
               createdAt: date,
               updatedAt: date
             };
-            
-            catalog.items.push(entry);
+
+            const existingIndex = catalog.items.findIndex((item) => item.id === id);
+            if (existingIndex >= 0) {
+              const existing = catalog.items[existingIndex];
+              if (compareSemver(version, existing.version) <= 0) {
+                throw new Error(`Version must be greater than existing catalog version (${existing.version}) for id "${id}".`);
+              }
+
+              catalog.items[existingIndex] = {
+                ...existing,
+                ...entry,
+                downloads: existing.downloads || 0,
+                rating: existing.rating || 0,
+                createdAt: existing.createdAt || date,
+                updatedAt: date,
+              };
+            } else {
+              catalog.items.push(entry);
+            }
+
             catalog.lastUpdated = date;
             
             fs.writeFileSync('content-catalog.json', JSON.stringify(catalog, null, 2));
